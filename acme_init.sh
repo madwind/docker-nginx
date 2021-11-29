@@ -1,4 +1,3 @@
-set -ex
 if [ -n "${EMAIL}" -a -n "${DOMAIN}" ]; then
   for domain in ${DOMAIN}
     do
@@ -9,6 +8,6 @@ if [ -n "${EMAIL}" -a -n "${DOMAIN}" ]; then
       /root/.acme.sh/acme.sh --install-cert -d ${domain} \
       --key-file       /etc/nginx/ssl/${domain}/key.pem  \
       --fullchain-file /etc/nginx/ssl/${domain}/cert.pem \
-      --reloadcmd     "service nginx force-reload"
+      --reloadcmd     "netstat -anput | grep nginx && nginx -s reload"
     done
 fi

@@ -1,5 +1,6 @@
 # docker-nginx-acme
 用环境变量自动申请证书
+````yaml
 version: '3.7'
 services:
   nginx:
@@ -25,3 +26,4 @@ services:
       driver: "json-file"
       options:
         max-size: "200k"
+````

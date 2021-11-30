@@ -1,4 +1,4 @@
-FROM nginx:1.21.4-alpine
+FROM nginx
 MAINTAINER madwind.cn@gmail.com
 
 ADD acme_init.sh /

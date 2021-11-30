@@ -8,6 +8,7 @@ RUN apk add --no-cache openssl socat && \
     mkdir /etc/acme && \
     cd /master/acme.sh-master && \
     ./acme.sh --install --config-home /etc/acme && \
+    /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt && \
     sed -i '3i\sh /acme_init.sh' /docker-entrypoint.sh && \
     rm -rf /var/cache/apk/* \
            /master \

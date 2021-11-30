@@ -11,8 +11,8 @@ if [ -n "${EMAIL}" -a -n "${DOMAIN}" ]; then
                               --config-home /etc/acme
       /root/.acme.sh/acme.sh --install-cert -d ${domain} \
                              --ecc \
-                             --key-file /etc/nginx/ssl/${domain}/cert.pem \
-                             --fullchain-file /etc/nginx/ssl/${domain}/cert.key \
+                             --key-file /etc/nginx/ssl/${domain}/cert.key \
+                             --fullchain-file /etc/nginx/ssl/${domain}/cert.pem \
                              --reloadcmd "netstat -anput | grep nginx && nginx -s reload" \
                              --config-home /etc/acme
     done

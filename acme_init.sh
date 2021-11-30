@@ -4,7 +4,7 @@ if [ -n "${EMAIL}" -a -n "${DOMAIN}" ]; then
       if [ ! -d "/etc/nginx/ssl/${domain}" ]; then
           mkdir -p /etc/nginx/ssl/${domain}
       fi
-      /nginx/.acme.sh/acme.sh --register-account -m ${EMAIL} \
+      /root/.acme.sh/acme.sh --register-account -m ${EMAIL} \
                               --issue -d ${domain} \
                               --keylength ec-256 \
                               --standalone \

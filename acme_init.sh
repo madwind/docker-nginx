@@ -11,4 +11,4 @@ if [ -n "${EMAIL}" -a -n "${DOMAIN}" ]; then
       --reloadcmd     "netstat -anput | grep nginx && nginx -s reload"
     done
 fi
-nginx -g "deamon off;"
+nginx -g "daemon off;"

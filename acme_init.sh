@@ -5,7 +5,7 @@ if [ -n "${EMAIL}" -a -n "${DOMAIN}" ]; then
       if [ ! -d "/etc/nginx/ssl/${domain}" ]; then
           mkdir -p /etc/nginx/ssl/${domain}
       fi
-      /root/.acme.sh/acme.sh --install-cert -d ${domain} \
+      /root/.acme.sh/acme.sh --install-cert -d ${domain} --config-home /etc/acme \
       --key-file       /etc/nginx/ssl/${domain}/key.pem  \
       --fullchain-file /etc/nginx/ssl/${domain}/cert.pem \
       --reloadcmd     "netstat -anput | grep nginx && nginx -s reload"

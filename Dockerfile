@@ -1,4 +1,4 @@
-FROM nginx:1.21.4-alpine
+FROM nginx:alpine
 MAINTAINER madwind.cn@gmail.com
 ADD acme_init.sh /
 RUN apk add --no-cache openssl socat && \

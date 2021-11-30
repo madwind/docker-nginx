@@ -3,7 +3,7 @@ MAINTAINER madwind.cn@gmail.com
 
 ADD acme_init.sh /
 RUN apt update && \
-    apt install -y wget && \
+    apt install -y wget unzip && \
     wget https://github.com/acmesh-official/acme.sh/archive/refs/heads/master.zip && \
     unzip master.zip -d master && \
     mkdir /etc/acme && \

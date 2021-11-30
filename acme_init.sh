@@ -1,7 +1,7 @@
 if [ -n "${EMAIL}" -a -n "${DOMAIN}" ]; then
   for domain in ${DOMAIN}
     do
-      /root/.acme.sh/acme.sh --register-account -m ${EMAIL} --issue -d ${domain} --standalone --config-home /etc/acme
+      /root/.acme.sh/acme.sh --register-account -m ${EMAIL} --issue -d ${domain} --keylength ec-256 --standalone --config-home /etc/acme
       if [ ! -d "/etc/nginx/ssl/${domain}" ]; then
           mkdir -p /etc/nginx/ssl/${domain}
       fi

@@ -6,7 +6,7 @@ if [ "$GEOIPUPDATE_ACCOUNT_ID" ] || [ "$GEOIPUPDATE_LICENSE_KEY" ] || [ "$GEOIPU
   if [ z "$(ls -A $database_dir)" ]; then
        mkdir -p /usr/share/GeoIP
        sh /geoipupdate.sh
-  else
+  fi
 fi
 
 if [ -n "${EMAIL}" -a -n "${DOMAIN}" ]; then

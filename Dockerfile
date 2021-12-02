@@ -25,7 +25,8 @@ RUN set -ex && \
                 libedit-dev \
                 bash \
                 alpine-sdk \
-                findutils && \
+                findutils \
+                libmaxminddb && \
   git clone https://github.com/google/ngx_brotli && \
   git clone https://github.com/leev/ngx_http_geoip2_module && \
   cd nginx-${NGINX_VERSION} && \

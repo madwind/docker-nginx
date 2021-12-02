@@ -39,7 +39,7 @@ FROM maxmindinc/geoipupdate as geoipupdate
     
 FROM nginx:${NGINX_VERSION}-alpine
 MAINTAINER madwind.cn@gmail.com
-ADD init.sh /
+COPY init.sh geoipupdate.sh /
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
     apk add --no-cache openssl socat libmaxminddb && \
     wget https://github.com/acmesh-official/acme.sh/archive/refs/heads/master.zip && \

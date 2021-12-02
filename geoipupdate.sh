@@ -7,10 +7,6 @@ if ! [ -z "$GEOIPUPDATE_CONF_FILE" ]; then
   conf_file=$GEOIPUPDATE_CONF_FILE
 fi
 
-if ! [ -z "$GEOIPUPDATE_DB_DIR" ]; then
-  database_dir=$GEOIPUPDATE_DB_DIR
-fi
-
 if [ -z "$GEOIPUPDATE_ACCOUNT_ID" ] || [ -z  "$GEOIPUPDATE_LICENSE_KEY" ] || [ -z "$GEOIPUPDATE_EDITION_IDS" ]; then
     echo "ERROR: You must set the environment variables GEOIPUPDATE_ACCOUNT_ID, GEOIPUPDATE_LICENSE_KEY, and GEOIPUPDATE_EDITION_IDS!"
     exit 1
@@ -45,4 +41,4 @@ if [ "$GEOIPUPDATE_VERBOSE" ]; then
 fi
 
 echo "# STATE: Running geoipupdate"
-/usr/bin/geoipupdate -d "$database_dir" -f "$conf_file" $flags
+/usr/bin/geoipupdate -f "$conf_file" $flags

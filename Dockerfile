@@ -46,7 +46,6 @@ RUN apk add --no-cache openssl socat libmaxminddb && \
     cd /master/acme.sh-master && \
     ./acme.sh --install --config-home /etc/acme && \
     sed -i '3i\sh /init.sh' /docker-entrypoint.sh && \
-    wget https://github.com/maxmind/geoipupdate/releases/download/v4.8.0/geoipupdate_4.8.0_linux_arm64.tar.gz
     rm -rf /var/cache/apk/* \
            /master.zip \
            /master

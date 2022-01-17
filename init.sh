@@ -27,3 +27,7 @@ if [ -n "${EMAIL}" -a -n "${DOMAIN}" ]; then
                              --config-home /etc/acme
     done
 fi
+
+if [ ! -d "/usr/local/nginx/proxy_cache" ]; then
+    mkdir -p /usr/local/nginx/proxy_cache
+fi

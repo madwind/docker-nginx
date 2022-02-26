@@ -7,7 +7,6 @@ ARG NGINX_VERSION
 WORKDIR /build
 
 RUN set -ex && \
-    sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
     wget https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
     tar xzvf nginx-${NGINX_VERSION}.tar.gz && \
     apk add --no-cache --virtual .build-deps \
@@ -40,8 +39,7 @@ FROM maxmindinc/geoipupdate as geoipupdate
 FROM nginx:${NGINX_VERSION}-alpine
 MAINTAINER madwind.cn@gmail.com
 COPY init.sh geoipupdate.sh /
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
-    apk add --no-cache openssl socat libmaxminddb && \
+RUN apk add --no-cache openssl socat libmaxminddb && \
     wget https://github.com/acmesh-official/acme.sh/archive/refs/heads/master.zip && \
     unzip master.zip -d master && \
     mkdir /etc/acme && \

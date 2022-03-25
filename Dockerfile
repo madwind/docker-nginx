@@ -1,10 +1,11 @@
 ARG NGINX_VERSION=1.21.6
 
-FROM nginx:${NGINX_VERSION}-alpine as builder
+FROM nginx:${NGINX_VERSION} as builder
 
 WORKDIR /build
 
 RUN set -ex && \
+    apt-get update
     wget https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
     tar xzvf nginx-${NGINX_VERSION}.tar.gz && \
     apk add --no-cache --virtual .build-deps \
@@ -34,7 +35,7 @@ RUN set -ex && \
   
 FROM maxmindinc/geoipupdate as geoipupdate
     
-FROM nginx:${NGINX_VERSION}-alpine
+FROM nginx:${NGINX_VERSION}
 MAINTAINER madwind.cn@gmail.com
 COPY init.sh geoipupdate.sh /
 RUN apk add --no-cache openssl socat libmaxminddb && \

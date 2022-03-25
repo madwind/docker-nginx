@@ -5,8 +5,8 @@ FROM nginx:${NGINX_VERSION} as builder
 WORKDIR /build
 
 RUN set -ex && \
-    apt-get update
-    apt-get install wget git
+    apt-get update && \
+    apt-get install wget git && \
     wget https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
     tar xzvf nginx-${NGINX_VERSION}.tar.gz && \
     git clone https://github.com/google/ngx_brotli && \

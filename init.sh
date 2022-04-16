@@ -14,11 +14,13 @@ if [ -n "${EMAIL}" -a -n "${DOMAIN}" ]; then
       if [ ! -d "/etc/nginx/ssl/${domain}" ]; then
           mkdir -p /etc/nginx/ssl/${domain}
       fi
-      /root/.acme.sh/acme.sh --register-account -m ${EMAIL} \
-                              --issue -d ${domain} \
-                              --keylength ec-256 \
-                              --standalone \
-                              --config-home /etc/acme
+      /root/.acme.sh/acme.sh --register-account \
+                             --eab-kid ${EAB_KID} \ 
+                             --eab-hmac-key ${EAB_KEY} \
+                             --issue -d ${domain} \
+                             --keylength ec-256 \
+                             --standalone \
+                             --config-home /etc/acme
       /root/.acme.sh/acme.sh --install-cert -d ${domain} \
                              --ecc \
                              --key-file /etc/nginx/ssl/${domain}/cert.key \

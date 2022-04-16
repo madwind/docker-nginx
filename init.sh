@@ -8,7 +8,7 @@ if [ "$GEOIPUPDATE_ACCOUNT_ID" ] && [ "$GEOIPUPDATE_LICENSE_KEY" ] && [ "$GEOIPU
   fi
 fi
 
-if [ -n "${EMAIL}" -a -n "${DOMAIN}" ]; then
+if [ -n "${EAB_KID}" -a -n "${EAB_KEY}" -a -n "${DOMAIN}" ]; then
   for domain in ${DOMAIN}
     do
       if [ ! -d "/etc/nginx/ssl/${domain}" ]; then

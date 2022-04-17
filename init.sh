@@ -19,12 +19,12 @@ if [ -n "${EAB_KID}" -a -n "${EAB_HMAC_KEY}" -a -n "${DOMAIN}" ]; then
                              --eab-hmac-key ${EAB_HMAC_KEY} \
                              --issue -d ${domain} \
                              --keylength ec-256 \
-                             --standalone \
+                             --standalone
       /root/.acme.sh/acme.sh --install-cert -d ${domain} \
                              --ecc \
                              --key-file /etc/nginx/ssl/${domain}/cert.key \
                              --fullchain-file /etc/nginx/ssl/${domain}/cert.pem \
-                             --reloadcmd "netstat -anput | grep nginx && nginx -s reload" \
+                             --reloadcmd "netstat -anput | grep nginx && nginx -s reload"
     done
 fi
 

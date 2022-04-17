@@ -40,7 +40,6 @@ COPY init.sh geoipupdate.sh /
 RUN apk add --no-cache openssl socat libmaxminddb pcre && \
     wget https://github.com/acmesh-official/acme.sh/archive/refs/heads/master.zip && \
     unzip master.zip -d master && \
-    mkdir /etc/acme && \
     cd /master/acme.sh-master && \
     ./acme.sh --install && \
     sed -i '3i\sh /init.sh' /docker-entrypoint.sh && \

@@ -24,8 +24,9 @@ if [ -n "${EAB_KID}" ] && [ -n "${EAB_HMAC_KEY}" ] && [ -n "${DOMAIN}" ]; then
     /root/.acme.sh/acme.sh \
       --install-cert -d "${domain}" \
       --ecc \
+      --cert-file /etc/nginx/ssl/"${domain}"/cert \
       --key-file /etc/nginx/ssl/"${domain}"/cert.key \
-      --fullchain-file /etc/nginx/ssl/"${domain}"/cert.pem \
+      --fullchain-file /etc/nginx/ssl/"${domain}"/fullchain.cer \
       --reloadcmd "netstat -anput | grep nginx && nginx -s reload"
   done
 fi

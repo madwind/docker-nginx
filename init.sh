@@ -8,7 +8,7 @@ if [ "$GEOIPUPDATE_ACCOUNT_ID" ] && [ "$GEOIPUPDATE_LICENSE_KEY" ] && [ "$GEOIPU
   fi
 fi
 
-if [ -n "${EAB_KID}" -a -n "${EAB_KEY}" -a -n "${DOMAIN}" ]; then
+if [ -n "${EAB_KID}" -a -n "${EAB_HMAC_KEY}" -a -n "${DOMAIN}" ]; then
   for domain in ${DOMAIN}
     do
       if [ ! -d "/etc/nginx/ssl/${domain}" ]; then
@@ -16,7 +16,7 @@ if [ -n "${EAB_KID}" -a -n "${EAB_KEY}" -a -n "${DOMAIN}" ]; then
       fi
       /root/.acme.sh/acme.sh --register-account \
                              --eab-kid ${EAB_KID} \ 
-                             --eab-hmac-key ${EAB_KEY} \
+                             --eab-hmac-key ${EAB_HMAC_KEY} \
                              --issue -d ${domain} \
                              --keylength ec-256 \
                              --standalone \

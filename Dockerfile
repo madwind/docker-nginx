@@ -42,7 +42,7 @@ RUN apk add --no-cache openssl socat libmaxminddb pcre && \
     unzip master.zip -d master && \
     mkdir /etc/acme && \
     cd /master/acme.sh-master && \
-    ./acme.sh --install --config-home /etc/acme && \
+    ./acme.sh --install && \
     sed -i '3i\sh /init.sh' /docker-entrypoint.sh && \
     crontab -l > conf && echo "10 0 * * * sh /geoipupdate.sh" >> conf && crontab conf && rm -f conf && \
     rm -rf /var/cache/apk/* \

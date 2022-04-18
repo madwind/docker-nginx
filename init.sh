@@ -10,6 +10,7 @@ fi
 
 if [ -n "${EAB_KID}" ] && [ -n "${EAB_HMAC_KEY}" ] && [ -n "${DOMAIN}" ]; then
   /root/.acme.sh/acme.sh \
+    --config-home /etc/acme \
     --register-account \
     --eab-kid "${EAB_KID}" \
     --eab-hmac-key "${EAB_HMAC_KEY}"
@@ -18,10 +19,12 @@ if [ -n "${EAB_KID}" ] && [ -n "${EAB_HMAC_KEY}" ] && [ -n "${DOMAIN}" ]; then
       mkdir -p /etc/nginx/ssl/"${domain}"
     fi
     /root/.acme.sh/acme.sh \
+      --config-home /etc/acme \
       --issue -d "${domain}" \
       --keylength ec-256 \
       --standalone
     /root/.acme.sh/acme.sh \
+      --config-home /etc/acme \
       --install-cert -d "${domain}" \
       --ecc \
       --cert-file /etc/nginx/ssl/"${domain}"/cert \

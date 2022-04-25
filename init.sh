@@ -14,28 +14,26 @@ if [ -n "${EAB_KID}" ] && [ -n "${EAB_HMAC_KEY}" ] && [ -n "${DOMAIN}" ]; then
     --register-account \
     --eab-kid "${EAB_KID}" \
     --eab-hmac-key "${EAB_HMAC_KEY}"
-  for domain in ${DOMAIN}; do
-    if [ ! -d "/etc/nginx/ssl/${domain}" ]; then
-      mkdir -p /etc/nginx/ssl/"${domain}"
-    fi
-    /root/.acme.sh/acme.sh \
-      --config-home /etc/acme \
-      --issue -d "${domain}" \
-      --keylength ec-256 \
-      --standalone
-    /root/.acme.sh/acme.sh \
-      --config-home /etc/acme \
-      --install-cert -d "${domain}" \
-      --ecc \
-      --cert-file /etc/nginx/ssl/"${domain}"/cert \
-      --key-file /etc/nginx/ssl/"${domain}"/cert.key \
-      --fullchain-file /etc/nginx/ssl/"${domain}"/fullchain.cer \
-      --reloadcmd "netstat -anput | grep nginx && nginx -s reload"
-  done
+  if [ ! -d "/etc/nginx/ssl/${DOMAIN}" ]; then
+    mkdir -p /etc/nginx/ssl/"${DOMAIN}"
+  fi
+  /root/.acme.sh/acme.sh \
+    --config-home /etc/acme \
+    --issue -d "${domain}" \
+    --keylength ec-256 \
+    --standalone
+  /root/.acme.sh/acme.sh \
+    --config-home /etc/acme \
+    --install-cert -d "${domain}" \
+    --ecc \
+    --cert-file /etc/nginx/ssl/"${domain}"/cert \
+    --key-file /etc/nginx/ssl/"${domain}"/cert.key \
+    --fullchain-file /etc/nginx/ssl/"${domain}"/fullchain.cer \
+    --reloadcmd "netstat -anput | grep nginx && nginx -s reload"
 fi
 
 if [ ! -d "/usr/local/nginx/proxy_cache" ]; then
   mkdir -p /usr/local/nginx/proxy_cache
 fi
 
-envsubst '$DOMAIN' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
+envsubst '$Node' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf

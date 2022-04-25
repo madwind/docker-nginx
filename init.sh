@@ -36,4 +36,4 @@ if [ ! -d "/usr/local/nginx/proxy_cache" ]; then
   mkdir -p /usr/local/nginx/proxy_cache
 fi
 
-envsubst '$Node' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
+envsubst '$NODE' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf

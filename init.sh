@@ -37,3 +37,5 @@ if [ ! -d "/usr/local/nginx/proxy_cache" ]; then
 fi
 
 envsubst '$NODE' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
+
+crond

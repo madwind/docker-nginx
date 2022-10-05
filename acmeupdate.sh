@@ -1,13 +1,3 @@
-if [ "$GEOIPUPDATE_ACCOUNT_ID" ] && [ "$GEOIPUPDATE_LICENSE_KEY" ] && [ "$GEOIPUPDATE_EDITION_IDS" ]; then
-  database_dir=/usr/share/GeoIP
-  if [ "$GEOIPUPDATE_DB_DIR" ]; then
-    database_dir=$GEOIPUPDATE_DB_DIR
-  fi
-  if [ -z "$(ls -A "$database_dir")" ]; then
-    sh /geoipupdate.sh
-  fi
-fi
-
 if [ -n "$EAB_KID" ] && [ -n "$EAB_HMAC_KEY" ] && [ -n "$DOMAIN" ]; then
   /root/.acme.sh/acme.sh \
     --config-home /etc/acme \
@@ -35,7 +25,5 @@ fi
 if [ ! -d "/usr/local/nginx/proxy_cache" ]; then
   mkdir -p /usr/local/nginx/proxy_cache
 fi
-
-envsubst '$NODE' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
 
 crond

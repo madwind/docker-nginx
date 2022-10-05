@@ -36,15 +36,14 @@ FROM maxmindinc/geoipupdate as geoipupdate
     
 FROM nginx:${NGINX_VERSION}-alpine
 MAINTAINER madwind.cn@gmail.com
-COPY init.sh geoipupdate.sh /
+COPY acmeupdate.sh geoipupdate.sh /docker-entrypoint.d/
 RUN apk add --no-cache openssl socat libmaxminddb pcre && \
     wget https://github.com/acmesh-official/acme.sh/archive/refs/heads/master.zip && \
     unzip master.zip -d master && \
     cd /master/acme.sh-master && \
     mkdir /etc/acme && \
     ./acme.sh --install --config-home /etc/acme && \
-    sed -i '3i\sh /init.sh' /docker-entrypoint.sh && \
-    crontab -l > conf && echo "10 0 * * * sh /geoipupdate.sh" >> conf && crontab conf && rm -f conf && \
+    crontab -l > conf && echo "10 0 * * * sh /docker-entrypoint.d/geoipupdate.sh" >> conf && crontab conf && rm -f conf && \
     rm -rf /var/cache/apk/* \
            /master.zip \
            /master

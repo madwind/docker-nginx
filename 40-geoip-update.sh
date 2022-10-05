@@ -1,3 +1,5 @@
+#!/bin/sh
+
 if [ "$GEOIPUPDATE_ACCOUNT_ID" ] && [ "$GEOIPUPDATE_LICENSE_KEY" ] && [ "$GEOIPUPDATE_EDITION_IDS" ]; then
   database_dir=/usr/share/GeoIP
   if [ "$GEOIPUPDATE_DB_DIR" ]; then

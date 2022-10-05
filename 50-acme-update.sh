@@ -1,3 +1,5 @@
+#!/bin/sh
+
 if [ -n "$EAB_KID" ] && [ -n "$EAB_HMAC_KEY" ] && [ -n "$DOMAIN" ]; then
   /root/.acme.sh/acme.sh \
     --config-home /etc/acme \
@@ -25,5 +27,3 @@ fi
 if [ ! -d "/usr/local/nginx/proxy_cache" ]; then
   mkdir -p /usr/local/nginx/proxy_cache
 fi
-
-crond

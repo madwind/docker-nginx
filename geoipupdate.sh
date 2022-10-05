@@ -1,4 +1,14 @@
-set -e
+if [ "$GEOIPUPDATE_ACCOUNT_ID" ] && [ "$GEOIPUPDATE_LICENSE_KEY" ] && [ "$GEOIPUPDATE_EDITION_IDS" ]; then
+  database_dir=/usr/share/GeoIP
+  if [ "$GEOIPUPDATE_DB_DIR" ]; then
+    database_dir=$GEOIPUPDATE_DB_DIR
+  fi
+  if [ -z "$(ls -A "$database_dir")" ]; then
+    sh /geoipupdate.sh
+  fi
+else
+  exit 0
+fi
 
 conf_file=/etc/GeoIP.conf
 database_dir=/usr/share/GeoIP

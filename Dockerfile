@@ -36,7 +36,7 @@ FROM maxmindinc/geoipupdate as geoipupdate
     
 FROM nginx:${NGINX_VERSION}-alpine
 MAINTAINER madwind.cn@gmail.com
-COPY 40-geoip-update.sh 50-acme-update.sh 60-start-crond.sh 70-envsubst-on-node.sh /docker-entrypoint.d/
+COPY 40-geoip-update.sh 50-acme-update.sh 60-envsubst-on-node.sh 70-start-crond.sh /docker-entrypoint.d/
 RUN apk add --no-cache openssl socat libmaxminddb pcre && \
     wget https://github.com/acmesh-official/acme.sh/archive/refs/heads/master.zip && \
     unzip master.zip -d master && \

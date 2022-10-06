@@ -5,9 +5,6 @@ if [ "$GEOIPUPDATE_ACCOUNT_ID" ] && [ "$GEOIPUPDATE_LICENSE_KEY" ] && [ "$GEOIPU
   if [ "$GEOIPUPDATE_DB_DIR" ]; then
     database_dir=$GEOIPUPDATE_DB_DIR
   fi
-  if [ -z "$(ls -A "$database_dir")" ]; then
-    sh /geoipupdate.sh
-  fi
 else
   exit 0
 fi

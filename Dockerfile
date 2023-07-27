@@ -1,4 +1,4 @@
-ARG NGINX_VERSION=1.23.2
+ARG NGINX_VERSION=1.25.1
 
 FROM nginx:${NGINX_VERSION}-alpine as builder
 

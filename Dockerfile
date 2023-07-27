@@ -1,7 +1,7 @@
-ARG NGINX_VERSION=1.25.1
+ARG NGINX_VERSION
 
 FROM nginx:${NGINX_VERSION}-alpine as builder
-
+ARG NGINX_VERSION
 WORKDIR /build
 
 RUN set -ex && \

@@ -13,7 +13,7 @@ jobs:
       id: get-latest-version
       run: |
         NGINX_VERSION=$(curl --silent "https://api.github.com/repos/nginx/nginx/tags" | jq -r '.[0].name' | sed 's/release-//')
-        echo "::set-output name=version::$NGINX_VERSION"
+        echo "version=$NGINX_VERSION" >> "$GITHUB_OUTPUT"
     -
       name: Set up QEMU
       uses: docker/setup-qemu-action@v2

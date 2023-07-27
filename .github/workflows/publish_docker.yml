@@ -9,6 +9,12 @@ jobs:
       name: Checkout master
       uses: actions/checkout@v3
     -
+      name: Get latest NGINX version
+      id: get-latest-version
+      run: |
+        NGINX_VERSION=$(curl --silent "https://api.github.com/repos/nginx/nginx/tags" | jq -r '.[0].name')
+        echo "::set-output name=version::$NGINX_VERSION"
+    -
       name: Set up QEMU
       uses: docker/setup-qemu-action@v2
     -

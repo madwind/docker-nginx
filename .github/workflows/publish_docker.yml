@@ -12,7 +12,7 @@ jobs:
       name: Get latest NGINX version
       id: get-latest-version
       run: |
-        NGINX_VERSION=$(curl --silent "https://api.github.com/repos/nginx/nginx/tags" | jq -r '.[0].name')
+        NGINX_VERSION=$(curl --silent "https://api.github.com/repos/nginx/nginx/tags" | jq -r '.[0].name' | sed 's/release-//')
         echo "::set-output name=version::$NGINX_VERSION"
     -
       name: Set up QEMU

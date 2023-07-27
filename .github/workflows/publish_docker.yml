@@ -33,4 +33,5 @@ jobs:
         context: .
         platforms: linux/amd64,linux/arm64
         push: true
-        tags: madwind/nginx:1.25.1
+        tags: madwind/nginx:latest,madwind/nginx:${{ steps.get-latest-version.outputs.version }}
+        build-args: NGINX_VERSION=${{ steps.get-latest-version.outputs.version }}

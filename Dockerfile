@@ -25,7 +25,7 @@ RUN set -ex && \
       findutils \
       libmaxminddb-dev && \
     # brotil
-    git clone https://github.com/google/ngx_brotli && \
+    git clone --recurse-submodules https://github.com/google/ngx_brotli && \
     # geoip2
     git clone https://github.com/leev/ngx_http_geoip2_module  && \
     cd nginx-${NGINX_VERSION} && \

@@ -11,7 +11,6 @@ RUN set -ex && \
       gcc \
       libc-dev \
       make \
-      cmake \
       openssl-dev \
       pcre-dev \
       zlib-dev \

@@ -4,6 +4,8 @@ if [ -n "$EAB_KID" ] && [ -n "$EAB_HMAC_KEY" ] && [ -n "$DOMAIN" ]; then
   /root/.acme.sh/acme.sh \
     --config-home /etc/acme \
     --register-account \
+    --server google
+    -m "$MAIL"
     --eab-kid "$EAB_KID" \
     --eab-hmac-key "$EAB_HMAC_KEY"
   if [ ! -d "/etc/nginx/ssl/$DOMAIN" ]; then
@@ -13,7 +15,7 @@ if [ -n "$EAB_KID" ] && [ -n "$EAB_HMAC_KEY" ] && [ -n "$DOMAIN" ]; then
     --config-home /etc/acme \
     --issue -d "$DOMAIN" \
     --keylength ec-256 \
-    --standalone
+    --dns dns_cf
   /root/.acme.sh/acme.sh \
     --config-home /etc/acme \
     --install-cert -d "$DOMAIN" \

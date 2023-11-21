@@ -1,11 +1,11 @@
 #!/bin/sh
 
-if [ -n "$EAB_KID" ] && [ -n "$EAB_HMAC_KEY" ] && [ -n "$DOMAIN" ]; then
+if [ -n "$EAB_KID" ] && [ -n "$EAB_HMAC_KEY" ] && [ -n "$DOMAIN" ] && [ -n "$MAIL" ] && [ -n "$CF_Token" ] && [ -n "$CF_Zone_ID" ]; then
   /root/.acme.sh/acme.sh \
     --config-home /etc/acme \
     --register-account \
-    --server google
-    -m "$MAIL"
+    -m "$MAIL" \
+    --server google \
     --eab-kid "$EAB_KID" \
     --eab-hmac-key "$EAB_HMAC_KEY"
   if [ ! -d "/etc/nginx/ssl/$DOMAIN" ]; then

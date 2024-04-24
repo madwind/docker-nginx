@@ -53,7 +53,8 @@ COPY --from=geoipupdate /usr/bin/geoipupdate /usr/bin/geoipupdate
 COPY geoip-update.sh /
 COPY 40-acme-update.sh 50-envsubst-on-node.sh 60-start-crond.sh /docker-entrypoint.d/
 
-RUN apk add --no-cache openssl socat libmaxminddb pcre && \
+RUN set -x && \
+    apk add --no-cache openssl socat libmaxminddb pcre && \
     wget https://github.com/acmesh-official/acme.sh/archive/refs/heads/master.zip && \
     unzip master.zip -d master && \
     cd /master/acme.sh-master && \

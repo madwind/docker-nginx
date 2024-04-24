@@ -59,8 +59,9 @@ RUN set -x && \
     unzip master.zip -d master && \
     cd /master/acme.sh-master && \
     mkdir /etc/acme && \
-    echo -e "AccountID ${GEOIPUPDATE_ACCOUNT_ID}\nLicenseKey ${GEOIPUPDATE_LICENSE_KEY}\nEditionIDs ${GEOIPUPDATE_EDITION_IDS}" > "$GEOIPUPDATE_CONF_FILE" && \
     ./acme.sh --install --config-home /etc/acme && \
+    echo -e "AccountID ${GEOIPUPDATE_ACCOUNT_ID}\nLicenseKey ${GEOIPUPDATE_LICENSE_KEY}\nEditionIDs ${GEOIPUPDATE_EDITION_IDS}" > "$GEOIPUPDATE_CONF_FILE" && \
+    cat "$GEOIPUPDATE_CONF_FILE" && \
     /usr/bin/geoipupdate -d "$GEOIPUPDATE_DB_DIR" -f "$GEOIPUPDATE_CONF_FILE" -v && \
     crontab -l > conf && echo "10 0 * * 3,6 /geoip-update.sh" >> conf && crontab conf && rm -f conf && \
     chmod +x /geoip-update.sh && \

@@ -34,8 +34,6 @@ jobs:
         push: true
         tags: madwind/nginx:latest,madwind/nginx:${{ steps.get-latest-version.outputs.version }}
         build-args: |
-          # NGINX_VERSION=${{ steps.get-latest-version.outputs.version }}
-          NGINX_VERSION=1.25.5
+          NGINX_VERSION=${{ steps.get-latest-version.outputs.version }}
           GEOIPUPDATE_ACCOUNT_ID=${{ secrets.GEOIPUPDATE_ACCOUNT_ID }}
           GEOIPUPDATE_LICENSE_KEY=${{ secrets.GEOIPUPDATE_LICENSE_KEY }}
-            

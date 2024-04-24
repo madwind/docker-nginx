@@ -38,18 +38,20 @@ FROM maxmindinc/geoipupdate as geoipupdate
     
 FROM nginx:${NGINX_VERSION}-alpine
 MAINTAINER madwind.cn@gmail.com
-COPY 40-geoip-update.sh 50-acme-update.sh 60-envsubst-on-node.sh 70-start-crond.sh /docker-entrypoint.d/
+COPY --from=builder /build/nginx-${NGINX_VERSION}/objs/nginx /usr/sbin/nginx
+COPY --from=geoipupdate /usr/bin/geoipupdate /usr/bin/geoipupdate
+COPY geoip-update.sh /
+COPY 50-acme-update.sh 60-envsubst-on-node.sh 70-start-crond.sh /docker-entrypoint.d/
 RUN apk add --no-cache openssl socat libmaxminddb pcre && \
     wget https://github.com/acmesh-official/acme.sh/archive/refs/heads/master.zip && \
     unzip master.zip -d master && \
     cd /master/acme.sh-master && \
     mkdir /etc/acme && \
     ./acme.sh --install --config-home /etc/acme && \
-    crontab -l > conf && echo "10 0 * * * sh /docker-entrypoint.d/40-geoip-update.sh" >> conf && crontab conf && rm -f conf && \
-    chmod +x /docker-entrypoint.d/40-geoip-update.sh /docker-entrypoint.d/50-acme-update.sh /docker-entrypoint.d/60-envsubst-on-node.sh /docker-entrypoint.d/70-start-crond.sh && \
+    sh /geoip-update.sh && \
+    crontab -l > conf && echo "10 0 * * 3,6 /geoip-update.sh" >> conf && crontab conf && rm -f conf && \
+    chmod +x /geoip-update.sh && \
+    chmod +x /docker-entrypoint.d/50-acme-update.sh /docker-entrypoint.d/60-envsubst-on-node.sh /docker-entrypoint.d/70-start-crond.sh && \
     rm -rf /var/cache/apk/* \
            /master.zip \
            /master
-
-COPY --from=builder /build/nginx-${NGINX_VERSION}/objs/nginx /usr/sbin/nginx
-COPY --from=geoipupdate /usr/bin/geoipupdate /usr/bin/geoipupdate

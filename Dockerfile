@@ -1,4 +1,6 @@
 ARG NGINX_VERSION
+ARG GEOIPUPDATE_ACCOUNT_ID
+ARG GEOIPUPDATE_LICENSE_KEYARG 
 
 FROM nginx:${NGINX_VERSION}-alpine as builder
 ARG NGINX_VERSION
@@ -38,20 +40,35 @@ FROM maxmindinc/geoipupdate as geoipupdate
     
 FROM nginx:${NGINX_VERSION}-alpine
 MAINTAINER madwind.cn@gmail.com
+
+ARG GEOIPUPDATE_ACCOUNT_ID
+ARG GEOIPUPDATE_LICENSE_KEYARG
+
+ENV GEOIPUPDATE_CONF_FILE=/etc/GeoIP.conf
+ENV GEOIPUPDATE_DB_DIR=/usr/share/GeoIP
+ENV GEOIPUPDATE_EDITION_IDS=GeoLite2-City
+
 COPY --from=builder /build/nginx-${NGINX_VERSION}/objs/nginx /usr/sbin/nginx
 COPY --from=geoipupdate /usr/bin/geoipupdate /usr/bin/geoipupdate
 COPY geoip-update.sh /
 COPY 40-acme-update.sh 50-envsubst-on-node.sh 60-start-crond.sh /docker-entrypoint.d/
+
 RUN apk add --no-cache openssl socat libmaxminddb pcre && \
     wget https://github.com/acmesh-official/acme.sh/archive/refs/heads/master.zip && \
     unzip master.zip -d master && \
     cd /master/acme.sh-master && \
     mkdir /etc/acme && \
+    cat <<EOF >"$GEOIPUPDATE_CONF_FILE" \
+    AccountID ${GEOIPUPDATE_ACCOUNT_ID} \
+    LicenseKey ${GEOIPUPDATE_LICENSE_KEY} \
+    EditionIDs ${GEOIPUPDATE_EDITION_IDS} \
+    EOF && \
     ./acme.sh --install --config-home /etc/acme && \
-    sh /geoip-update.sh && \
+    /usr/bin/geoipupdate -d "$GEOIPUPDATE_DB_DIR" -f "$GEOIPUPDATE_CONF_FILE" -v && \
     crontab -l > conf && echo "10 0 * * 3,6 /geoip-update.sh" >> conf && crontab conf && rm -f conf && \
     chmod +x /geoip-update.sh && \
     chmod +x /docker-entrypoint.d/40-acme-update.sh /docker-entrypoint.d/50-envsubst-on-node.sh /docker-entrypoint.d/60-start-crond.sh && \
     rm -rf /var/cache/apk/* \
            /master.zip \
-           /master
+           /master \
+           "$GEOIPUPDATE_CONF_FILE"

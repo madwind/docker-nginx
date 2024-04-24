@@ -1,12 +1,7 @@
 #!/bin/sh
 
-if [ "$GEOIPUPDATE_ACCOUNT_ID" ] && [ "$GEOIPUPDATE_LICENSE_KEY" ] && [ "$GEOIPUPDATE_EDITION_IDS" ]; then
-  database_dir=/usr/share/GeoIP
-  if [ "$GEOIPUPDATE_DB_DIR" ]; then
-    database_dir=$GEOIPUPDATE_DB_DIR
-  fi
-else
-  exit 0
+if [ -z "$GEOIPUPDATE_ACCOUNT_ID" ] || [ -z "$GEOIPUPDATE_LICENSE_KEY" ] || [ -z "$GEOIPUPDATE_EDITION_IDS" ]; then
+  exit 1
 fi
 
 conf_file=/etc/GeoIP.conf
@@ -16,9 +11,8 @@ if [ -n "$GEOIPUPDATE_CONF_FILE" ]; then
   conf_file=$GEOIPUPDATE_CONF_FILE
 fi
 
-if [ -z "$GEOIPUPDATE_ACCOUNT_ID" ] || [ -z "$GEOIPUPDATE_LICENSE_KEY" ] || [ -z "$GEOIPUPDATE_EDITION_IDS" ]; then
-  echo "ERROR: You must set the environment variables GEOIPUPDATE_ACCOUNT_ID, GEOIPUPDATE_LICENSE_KEY, and GEOIPUPDATE_EDITION_IDS!"
-  exit 1
+if [ -n "$GEOIPUPDATE_DB_DIR" ]; then
+  database_dir=$GEOIPUPDATE_DB_DIR
 fi
 
 # Create configuration file

@@ -1,6 +1,6 @@
 ARG NGINX_VERSION
 ARG GEOIPUPDATE_ACCOUNT_ID
-ARG GEOIPUPDATE_LICENSE_KEYARG 
+ARG GEOIPUPDATE_LICENSE_KEY
 
 FROM nginx:${NGINX_VERSION}-alpine as builder
 ARG NGINX_VERSION
@@ -42,7 +42,7 @@ FROM nginx:${NGINX_VERSION}-alpine
 MAINTAINER madwind.cn@gmail.com
 
 ARG GEOIPUPDATE_ACCOUNT_ID
-ARG GEOIPUPDATE_LICENSE_KEYARG
+ARG GEOIPUPDATE_LICENSE_KEY
 
 ENV GEOIPUPDATE_CONF_FILE=/etc/GeoIP.conf
 ENV GEOIPUPDATE_DB_DIR=/usr/share/GeoIP
@@ -60,6 +60,7 @@ RUN set -x && \
     cd /master/acme.sh-master && \
     mkdir /etc/acme && \
     ./acme.sh --install --config-home /etc/acme && \
+    echo ${GEOIPUPDATE_ACCOUNT_ID} && \
     echo -e "AccountID ${GEOIPUPDATE_ACCOUNT_ID}\nLicenseKey ${GEOIPUPDATE_LICENSE_KEY}\nEditionIDs ${GEOIPUPDATE_EDITION_IDS}" > "$GEOIPUPDATE_CONF_FILE" && \
     cat "$GEOIPUPDATE_CONF_FILE" && \
     /usr/bin/geoipupdate -d "$GEOIPUPDATE_DB_DIR" -f "$GEOIPUPDATE_CONF_FILE" -v && \

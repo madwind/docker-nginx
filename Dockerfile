@@ -48,7 +48,7 @@ ENV GEOIPUPDATE_CONF_FILE=/etc/GeoIP.conf
 ENV GEOIPUPDATE_DB_DIR=/usr/share/GeoIP
 ENV GEOIPUPDATE_EDITION_IDS=GeoLite2-City
 
-COPY --from=builder /build/nginx-${NGINX_VERSION}/objs/nginx /usr/sbin/nginx
+#COPY --from=builder /build/nginx-${NGINX_VERSION}/objs/nginx /usr/sbin/nginx
 COPY --from=geoipupdate /usr/bin/geoipupdate /usr/bin/geoipupdate
 COPY geoip-update.sh /
 COPY 40-acme-update.sh 50-envsubst-on-node.sh 60-start-crond.sh /docker-entrypoint.d/

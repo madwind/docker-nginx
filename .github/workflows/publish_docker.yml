@@ -2,7 +2,7 @@ name: Build and Push Proxify Docker Image
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 env:
   REGISTRY_IMAGE: madwind/nginx

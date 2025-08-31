@@ -6,6 +6,8 @@ if [ -n "$EAB_KID" ] && [ -n "$EAB_HMAC_KEY" ] && [ -n "$DOMAINS" ] && [ -n "$CF
     --register-account \
     --eab-kid "$EAB_KID" \
     --eab-hmac-key "$EAB_HMAC_KEY"
+
+  DOMAINS="${DOMAINS//\${NODE_NAME}/$NODE_NAME}"
   for DOMAIN in $DOMAINS; do
     if [ ! -d "/etc/nginx/ssl/$DOMAIN" ]; then
       mkdir -p /etc/nginx/ssl/"$DOMAIN"

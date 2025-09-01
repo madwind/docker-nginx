@@ -6,7 +6,7 @@ ngx_http_geoip2_module
 
 ngx_brotli
 
-````yaml
+```yaml
 version: '3.7'
 services:
   nginx:
@@ -23,12 +23,20 @@ services:
       - "443:443"
     environment:
       - TZ=Asia/Shanghai
-      # 必填
-      - EMAIL=a@b.com
-      # 域名 空格分隔
-      - DOMAIN=a.b.com c.d.com
+      #ACME
+      ## 域名 空格分隔
+      - DOMAINS=a.b.com c.d.com e.NODE_NAME.com
+      ## 存在NODE_NAME时候 会替换DOMAINS字符串
+      - NODE_NAME=foo 
+      ## 存在 /etc/nginx/nginx.conf.template 时 NODE_NAME NODE_IP 替换内容 > /etc/nginx/nginx.conf
+      - NODE_IP=0.0.0.0
+      ## Zero-ssl
+      - EAB_KID=
+      - EAB_HMAC_KEY=
+      - CF_Token=
+      - CF_Zone_ID=
       #  Maxminds
       - GEOIPUPDATE_ACCOUNT_ID=<ID>
       - GEOIPUPDATE_LICENSE_KEY=<KEY>
       - GEOIPUPDATE_EDITION_IDS=<IDS>
-````
+```

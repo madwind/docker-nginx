@@ -6,6 +6,9 @@ if [ -n "$EAB_KID" ] && [ -n "$EAB_HMAC_KEY" ] && [ -n "$DOMAINS" ] && [ -n "$CF
     --register-account \
     --eab-kid "$EAB_KID" \
     --eab-hmac-key "$EAB_HMAC_KEY"
+  if [ -n "$NODE_NAME" ]; then
+    DOMAINS=$(echo "$DOMAINS" | sed "s/NODE_NAME/$NODE_NAME/g")
+  fi
   for DOMAIN in $DOMAINS; do
     if [ ! -d "/etc/nginx/ssl/$DOMAIN" ]; then
       mkdir -p /etc/nginx/ssl/"$DOMAIN"
@@ -22,7 +25,7 @@ if [ -n "$EAB_KID" ] && [ -n "$EAB_HMAC_KEY" ] && [ -n "$DOMAINS" ] && [ -n "$CF
       --cert-file /etc/nginx/ssl/"$DOMAIN"/cert \
       --key-file /etc/nginx/ssl/"$DOMAIN"/cert.key \
       --fullchain-file /etc/nginx/ssl/"$DOMAIN"/fullchain.cer \
-      --reloadcmd "netstat -anput | grep nginx && nginx -s reload"
+      --reloadcmd "nginx -s reload"
   done
 fi
 if [ ! -d "/usr/local/nginx/proxy_cache" ]; then

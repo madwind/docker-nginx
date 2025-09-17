@@ -13,7 +13,7 @@ RUN set -ex && \
       # nginx \
       gcc \
       make \
-      libpcre3-dev \
+      libpcre2-dev \
       zlib1g-dev \
       libssl-dev \
       # brotli \
@@ -25,6 +25,7 @@ RUN set -ex && \
     git clone --recurse-submodules https://github.com/google/ngx_brotli && \
     git clone https://github.com/leev/ngx_http_geoip2_module && \
     cd nginx-${NGINX_VERSION} && \
+    nginx -V > nginx.info 2>&1 && \
     params=$(grep 'configure arguments:' nginx.info | sed 's/^configure arguments: //') && \
     sh -c "./configure $params --add-module=/build/ngx_brotli --add-module=/build/ngx_http_geoip2_module" && \
     make -j$(nproc)
@@ -47,7 +48,7 @@ COPY 40-acme-update.sh 50-envsubst-on-node.sh /docker-entrypoint.d/
 
 RUN set -ex && \
     apt-get update && \
-    apt-get install --no-install-recommends --no-install-suggests -y libmaxminddb0 cron libpcre3 && \
+    apt-get install --no-install-recommends --no-install-suggests -y libmaxminddb0 cron && \
     mkdir /etc/acme && \
     curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- --install-online --config-home /etc/acme && \
     echo "AccountID ${GEOIPUPDATE_ACCOUNT_ID}\nLicenseKey ${GEOIPUPDATE_LICENSE_KEY}\nEditionIDs ${GEOIPUPDATE_EDITION_IDS}" > "$GEOIPUPDATE_CONF_FILE" && \

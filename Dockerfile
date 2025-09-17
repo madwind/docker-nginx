@@ -43,11 +43,11 @@ ENV GEOIPUPDATE_EDITION_IDS=GeoLite2-City
 COPY --from=builder /build/nginx-${NGINX_VERSION}/objs/nginx /usr/sbin/nginx
 COPY --from=geoipupdate /usr/bin/geoipupdate /usr/bin/geoipupdate
 COPY geoip-update.sh /
-COPY 40-acme-update.sh 50-envsubst-on-node.sh 60-start-crond.sh /docker-entrypoint.d/
+COPY 40-acme-update.sh 50-envsubst-on-node.sh /docker-entrypoint.d/
 
 RUN set -ex && \
     apt-get update && \
-    apt-get install -y libmaxminddb && \
+    apt-get install -y libmaxminddb0 && \
     mkdir /etc/acme && \
     curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- --install-online --config-home /etc/acme && \
     echo -e "AccountID ${GEOIPUPDATE_ACCOUNT_ID}\nLicenseKey ${GEOIPUPDATE_LICENSE_KEY}\nEditionIDs ${GEOIPUPDATE_EDITION_IDS}" > "$GEOIPUPDATE_CONF_FILE" && \

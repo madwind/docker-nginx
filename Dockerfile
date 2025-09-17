@@ -32,7 +32,7 @@ RUN set -ex && \
     git clone https://github.com/leev/ngx_http_geoip2_module  && \
     cd nginx-${NGINX_VERSION} && \
     nginx -V &> nginx.info && \
-    params=$(grep -oP "(?<=configure ).*" nginx.info) && \
+    export params=$(grep -oP "(?<=configure ).*" nginx.info) && \
     ./configure ${params} --add-module=/build/ngx_brotli --add-module=/build/ngx_http_geoip2_module && \
     make -j$(nproc)
   

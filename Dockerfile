@@ -21,7 +21,7 @@ RUN set -ex && \
 FROM maxmindinc/geoipupdate AS geoipupdate
 
 FROM nginx:${NGINX_VERSION}
-
+ARG NGINX_VERSION
 ARG GEOIPUPDATE_ACCOUNT_ID
 ARG GEOIPUPDATE_LICENSE_KEY
 

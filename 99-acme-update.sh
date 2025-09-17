@@ -25,6 +25,6 @@ if [ -n "$EAB_KID" ] && [ -n "$EAB_HMAC_KEY" ] && [ -n "$DOMAINS" ] && [ -n "$CF
       --cert-file /etc/nginx/ssl/"$DOMAIN"/cert \
       --key-file /etc/nginx/ssl/"$DOMAIN"/cert.key \
       --fullchain-file /etc/nginx/ssl/"$DOMAIN"/fullchain.cer \
-      --reloadcmd "[ -f /var/run/nginx.pid ] && kill -0 $(cat /var/run/nginx.pid) 2>/dev/null && nginx -s reload"
+      --reloadcmd "nginx -s reload 2>/dev/null || true"
   done
 fi

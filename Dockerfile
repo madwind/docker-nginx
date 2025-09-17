@@ -49,12 +49,12 @@ COPY 99-acme-update.sh /docker-entrypoint.d/
 RUN set -ex && \
     apt-get update && \
     apt-get install --no-install-recommends --no-install-suggests -y socat libmaxminddb0 cron&& \
-    mkdir /etc/acme && \
-    curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- --install-online --config-home /etc/acme && \
     echo "AccountID ${GEOIPUPDATE_ACCOUNT_ID}\nLicenseKey ${GEOIPUPDATE_LICENSE_KEY}\nEditionIDs ${GEOIPUPDATE_EDITION_IDS}" > "$GEOIPUPDATE_CONF_FILE" && \
     /usr/bin/geoipupdate -d "$GEOIPUPDATE_DB_DIR" -f "$GEOIPUPDATE_CONF_FILE" -v && \
     crontab -l > conf && echo "10 0 * * 3,6 /geoip-update.sh" >> conf && crontab conf && rm -f conf && \
     chmod +x /geoip-update.sh && \
+    mkdir /etc/acme && \
+    curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- --install-online --config-home /etc/acme && \
     chmod +x /docker-entrypoint.d/99-acme-update.sh && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \

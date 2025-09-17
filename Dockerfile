@@ -47,7 +47,7 @@ COPY 40-acme-update.sh 50-envsubst-on-node.sh /docker-entrypoint.d/
 
 RUN set -ex && \
     apt-get update && \
-    apt-get install --no-install-recommends -y libmaxminddb0 cron && \
+    apt-get install --no-install-recommends --no-install-suggests -y libmaxminddb0 cron libpcre3 && \
     mkdir /etc/acme && \
     curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- --install-online --config-home /etc/acme && \
     echo "AccountID ${GEOIPUPDATE_ACCOUNT_ID}\nLicenseKey ${GEOIPUPDATE_LICENSE_KEY}\nEditionIDs ${GEOIPUPDATE_EDITION_IDS}" > "$GEOIPUPDATE_CONF_FILE" && \

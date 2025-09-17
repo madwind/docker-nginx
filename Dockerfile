@@ -44,7 +44,7 @@ ENV GEOIPUPDATE_EDITION_IDS=GeoLite2-City
 COPY --from=builder /build/nginx-${NGINX_VERSION}/objs/nginx /usr/sbin/nginx
 COPY --from=geoipupdate /usr/bin/geoipupdate /usr/bin/geoipupdate
 COPY geoip-update.sh /
-COPY 40-acme-update.sh 50-envsubst-on-node.sh /docker-entrypoint.d/
+COPY 99-acme-update.sh /docker-entrypoint.d/
 
 RUN set -ex && \
     apt-get update && \
@@ -55,7 +55,7 @@ RUN set -ex && \
     /usr/bin/geoipupdate -d "$GEOIPUPDATE_DB_DIR" -f "$GEOIPUPDATE_CONF_FILE" -v && \
     crontab -l > conf && echo "10 0 * * 3,6 /geoip-update.sh" >> conf && crontab conf && rm -f conf && \
     chmod +x /geoip-update.sh && \
-    chmod +x /docker-entrypoint.d/40-acme-update.sh /docker-entrypoint.d/50-envsubst-on-node.sh && \
+    chmod +x /docker-entrypoint.d/99-acme-update.sh && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
            /acme.tar.gz \

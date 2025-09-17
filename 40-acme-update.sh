@@ -28,6 +28,3 @@ if [ -n "$EAB_KID" ] && [ -n "$EAB_HMAC_KEY" ] && [ -n "$DOMAINS" ] && [ -n "$CF
       --reloadcmd "nginx -s reload"
   done
 fi
-if [ ! -d "/usr/local/nginx/proxy_cache" ]; then
-  mkdir -p /usr/local/nginx/proxy_cache
-fi

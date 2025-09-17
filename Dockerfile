@@ -26,15 +26,15 @@ RUN set -ex && \
       alpine-sdk \
       findutils \
       libmaxminddb-dev && \
-    # brotil
+    # brotli \
     git clone --recurse-submodules https://github.com/google/ngx_brotli && \
-    # geoip2
+    # geoip2 \
     git clone https://github.com/leev/ngx_http_geoip2_module  && \
     cd nginx-${NGINX_VERSION} && \
     nginx -V &> nginx.info && \
-    export params=`cat nginx.info | grep configure` && \
-    sh -c "./configure ${params:20} --add-module=/build/ngx_brotli --add-module=/build/ngx_http_geoip2_module" && \
-    make
+    params=$(grep -oP "(?<=configure ).*" nginx.info) && \
+    ./configure ${params} --add-module=/build/ngx_brotli --add-module=/build/ngx_http_geoip2_module && \
+    make -j$(nproc)
   
 FROM maxmindinc/geoipupdate as geoipupdate
     

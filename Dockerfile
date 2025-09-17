@@ -6,7 +6,8 @@ FROM nginx:${NGINX_VERSION} AS builder
 ARG NGINX_VERSION
 WORKDIR /build
 
-RUN apt-get update && \
+RUN set -ex && \
+    apt-get update && \
     apt-get install -y git && \
     curl -L https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz -o nginx-${NGINX_VERSION}.tar.gz && \
     tar xzvf "nginx-${NGINX_VERSION}.tar.gz" && \

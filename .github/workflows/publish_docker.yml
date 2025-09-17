@@ -62,6 +62,10 @@ jobs:
             GEOIPUPDATE_ACCOUNT_ID=${{ secrets.GEOIPUPDATE_ACCOUNT_ID }}
             GEOIPUPDATE_LICENSE_KEY=${{ secrets.GEOIPUPDATE_LICENSE_KEY }}
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
+        env:
+          BUILDKIT_PROGRESS: plain
+          DOCKER_BUILDKIT: 1
+          BUILDKIT_DEBUG: 1
 
       - name: Export digest
         run: |

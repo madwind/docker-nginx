@@ -46,9 +46,9 @@ COPY geoip-update.sh /
 COPY 40-acme-update.sh 50-envsubst-on-node.sh 60-start-crond.sh /docker-entrypoint.d/
 
 RUN set -ex && \
-    wget https://github.com/acmesh-official/acme.sh/archive/refs/heads/master.zip && \
-    unzip master.zip -d master && \
-    cd /master/acme.sh-master && \
+    curl -L https://github.com/acmesh-official/acme.sh/archive/refs/heads/master.zip -o acme.zip && \
+    unzip acme.zip -d acme && \
+    cd /acme/acme.sh-master && \
     mkdir /etc/acme && \
     ./acme.sh --install --config-home /etc/acme && \
     echo -e "AccountID ${GEOIPUPDATE_ACCOUNT_ID}\nLicenseKey ${GEOIPUPDATE_LICENSE_KEY}\nEditionIDs ${GEOIPUPDATE_EDITION_IDS}" > "$GEOIPUPDATE_CONF_FILE" && \
@@ -56,7 +56,6 @@ RUN set -ex && \
     crontab -l > conf && echo "10 0 * * 3,6 /geoip-update.sh" >> conf && crontab conf && rm -f conf && \
     chmod +x /geoip-update.sh && \
     chmod +x /docker-entrypoint.d/40-acme-update.sh /docker-entrypoint.d/50-envsubst-on-node.sh /docker-entrypoint.d/60-start-crond.sh && \
-    rm -rf /var/cache/apk/* \
-           /master.zip \
-           /master \
+    rm -rf /acme.zip \
+           /acme \
            "$GEOIPUPDATE_CONF_FILE"

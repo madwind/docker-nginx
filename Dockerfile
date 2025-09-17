@@ -10,11 +10,15 @@ RUN set -ex && \
     apt-get update && \
     apt-get install -y \
       git \
+      # nginx \
       gcc \
       make \
       libpcre3-dev \
       zlib1g-dev \
       libssl-dev \
+      # brotli \
+      libbrotli-dev \
+      # ngx_http_geoip2_module \
       libmaxminddb-dev && \
     curl -L https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz -o nginx-${NGINX_VERSION}.tar.gz && \
     tar xzvf "nginx-${NGINX_VERSION}.tar.gz" && \

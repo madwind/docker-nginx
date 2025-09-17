@@ -2,44 +2,24 @@ ARG NGINX_VERSION
 ARG GEOIPUPDATE_ACCOUNT_ID
 ARG GEOIPUPDATE_LICENSE_KEY
 
-FROM nginx:${NGINX_VERSION}-alpine as builder
+FROM nginx:${NGINX_VERSION} AS builder
 ARG NGINX_VERSION
 WORKDIR /build
 
-RUN set -ex && \
-    wget https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
-    tar xzvf nginx-${NGINX_VERSION}.tar.gz && \
-    apk add --no-cache --virtual .build-deps \
-      gcc \
-      libc-dev \
-      make \
-      openssl-dev \
-      pcre-dev \
-      zlib-dev \
-      linux-headers \
-      libxslt-dev \
-      gd-dev \
-      geoip-dev \
-      perl-dev \
-      libedit-dev \
-      bash \
-      alpine-sdk \
-      findutils \
-      libmaxminddb-dev && \
-    # brotli \
+RUN apt-get update && \
+    apt-get install -y git && \
+    curl -L https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz -o nginx-${NGINX_VERSION}.tar.gz && \
+    tar xzvf "nginx-${NGINX_VERSION}.tar.gz" && \
     git clone --recurse-submodules https://github.com/google/ngx_brotli && \
-    # geoip2 \
-    git clone https://github.com/leev/ngx_http_geoip2_module  && \
+    git clone https://github.com/leev/ngx_http_geoip2_module && \
     cd nginx-${NGINX_VERSION} && \
-    nginx -V &> nginx.info && \
-    export params=$(grep -oP "(?<=configure ).*" nginx.info) && \
-    ./configure ${params} --add-module=/build/ngx_brotli --add-module=/build/ngx_http_geoip2_module && \
+    params=$(nginx -V | grep configure) && \
+    ./configure ${params#*configure arguments: } --add-module=/build/ngx_brotli --add-module=/build/ngx_http_geoip2_module && \
     make -j$(nproc)
-  
-FROM maxmindinc/geoipupdate as geoipupdate
-    
-FROM nginx:${NGINX_VERSION}-alpine
-MAINTAINER madwind.cn@gmail.com
+
+FROM maxmindinc/geoipupdate AS geoipupdate
+
+FROM nginx:${NGINX_VERSION}
 
 ARG GEOIPUPDATE_ACCOUNT_ID
 ARG GEOIPUPDATE_LICENSE_KEY
@@ -54,7 +34,6 @@ COPY geoip-update.sh /
 COPY 40-acme-update.sh 50-envsubst-on-node.sh 60-start-crond.sh /docker-entrypoint.d/
 
 RUN set -ex && \
-    apk add --no-cache openssl socat libmaxminddb pcre && \
     wget https://github.com/acmesh-official/acme.sh/archive/refs/heads/master.zip && \
     unzip master.zip -d master && \
     cd /master/acme.sh-master && \

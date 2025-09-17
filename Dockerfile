@@ -8,14 +8,14 @@ WORKDIR /build
 
 RUN set -ex && \
     apt-get update && \
-    apt-get install -y git && \
+    apt-get install -y git gcc make libpcre3-dev zlib1g-dev libssl-dev&& \
     curl -L https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz -o nginx-${NGINX_VERSION}.tar.gz && \
     tar xzvf "nginx-${NGINX_VERSION}.tar.gz" && \
     git clone --recurse-submodules https://github.com/google/ngx_brotli && \
     git clone https://github.com/leev/ngx_http_geoip2_module && \
     cd nginx-${NGINX_VERSION} && \
-    params=$(nginx -V | grep configure) && \
-    ./configure ${params#*configure arguments: } --add-module=/build/ngx_brotli --add-module=/build/ngx_http_geoip2_module && \
+    params=$(grep 'configure arguments:' nginx.info | sed 's/^configure arguments: //') && \
+    sh -c "./configure $params --add-module=/build/ngx_brotli --add-module=/build/ngx_http_geoip2_module" && \
     make -j$(nproc)
 
 FROM maxmindinc/geoipupdate AS geoipupdate

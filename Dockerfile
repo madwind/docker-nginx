@@ -8,7 +8,14 @@ WORKDIR /build
 
 RUN set -ex && \
     apt-get update && \
-    apt-get install -y git gcc make libpcre3-dev zlib1g-dev libssl-dev&& \
+    apt-get install -y \
+      git \
+      gcc \
+      make \
+      libpcre3-dev \
+      zlib1g-dev \
+      libssl-dev \
+      libmaxminddb-dev && \
     curl -L https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz -o nginx-${NGINX_VERSION}.tar.gz && \
     tar xzvf "nginx-${NGINX_VERSION}.tar.gz" && \
     git clone --recurse-submodules https://github.com/google/ngx_brotli && \

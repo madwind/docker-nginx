@@ -7,7 +7,7 @@ if [ -n "$EAB_KID" ] && [ -n "$EAB_HMAC_KEY" ] && [ -n "$DOMAINS" ] && [ -n "$CF
     --eab-kid "$EAB_KID" \
     --eab-hmac-key "$EAB_HMAC_KEY"
   if [ -n "$NODE_NAME" ]; then
-    DOMAINS=$(echo "$DOMAINS" | sed "s/NODE_NAME/$NODE_NAME/g")
+    DOMAINS=$(echo "$DOMAINS" | sed "s/\${NODE_NAME}/$NODE_NAME/g")
   fi
   for DOMAIN in $DOMAINS; do
     if [ ! -d "/etc/nginx/ssl/$DOMAIN" ]; then

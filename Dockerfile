@@ -48,7 +48,7 @@ COPY 80-cron.sh 90-acme.sh /docker-entrypoint.d/
 
 RUN set -ex && \
     apt-get update && \
-    apt-get install --no-install-recommends --no-install-suggests -y socat libmaxminddb0 cron && \
+    apt-get install --no-install-recommends --no-install-suggests -y libbrotli1 socat libmaxminddb0 cron && \
     mkdir /etc/acme && \
     curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- --install-online --config-home /etc/acme && \
     echo "AccountID ${GEOIPUPDATE_ACCOUNT_ID}\nLicenseKey ${GEOIPUPDATE_LICENSE_KEY}\nEditionIDs ${GEOIPUPDATE_EDITION_IDS}" > "$GEOIPUPDATE_CONF_FILE" && \

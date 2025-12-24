@@ -1,4 +1,4 @@
-name: Build and Push Proxify Docker Image
+name: Build and Push Nginx Docker Image
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      app_version: ${{ steps.app_version.outputs.app_version }}
+      app_version: ${{ steps.read_nginx_version.outputs.nginx_version }}
     strategy:
       matrix:
         platform:
@@ -22,11 +22,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Get latest nginx version
-        id: app_version
+      - name: Read nginx version from Dockerfile
+        id: extract_nginx_version
         run: |
-          NGINX_VERSION=$(curl --silent "https://api.github.com/repos/nginx/nginx/tags" | jq -r '.[0].name' | sed 's/release-//')
-          echo "app_version=$NGINX_VERSION" >> $GITHUB_OUTPUT
+          VERSION=$(grep '^ARG NGINX_VERSION=' Dockerfile | cut -d= -f2)
+          echo "nginx_version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Prepare
         run: |

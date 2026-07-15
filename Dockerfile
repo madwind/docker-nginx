@@ -1,11 +1,9 @@
 ARG NGINX_VERSION=1.31.2
-ARG HEADERS_MORE_VERSION=0.40
 ARG GEOIPUPDATE_ACCOUNT_ID
 ARG GEOIPUPDATE_LICENSE_KEY
 
 FROM nginx:${NGINX_VERSION} AS builder
 ARG NGINX_VERSION
-ARG HEADERS_MORE_VERSION
 WORKDIR /build
 
 RUN set -ex && \
@@ -26,13 +24,11 @@ RUN set -ex && \
     tar xzvf "nginx-${NGINX_VERSION}.tar.gz" && \
     git clone --recurse-submodules https://github.com/google/ngx_brotli && \
     git clone https://github.com/leev/ngx_http_geoip2_module && \
-    git clone --branch "v${HEADERS_MORE_VERSION}" --depth 1 https://github.com/openresty/headers-more-nginx-module && \
     cd nginx-${NGINX_VERSION} && \
     nginx -V > nginx.info 2>&1 && \
     params=$(grep 'configure arguments:' nginx.info | sed 's/^configure arguments: //') && \
-    sh -c "./configure $params --add-module=/build/ngx_brotli --add-module=/build/ngx_http_geoip2_module --add-module=/build/headers-more-nginx-module" && \
-    make -j$(nproc) && \
-    ./objs/nginx -V 2>&1 | grep -q -- '--add-module=/build/headers-more-nginx-module'
+    sh -c "./configure $params --add-module=/build/ngx_brotli --add-module=/build/ngx_http_geoip2_module" && \
+    make -j$(nproc)
 
 FROM maxmindinc/geoipupdate AS geoipupdate
 

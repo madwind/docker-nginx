@@ -6,8 +6,6 @@ ngx_http_geoip2_module
 
 ngx_brotli
 
-headers-more-nginx-module
-
 ```yaml
 version: '3.7'
 services:

@@ -80,7 +80,7 @@ jobs:
           - platform: linux/amd64
             runner: ubuntu-latest
           - platform: linux/arm64
-            runner: ubuntu-latest-arm
+            runner: ubuntu-26.04-arm
     runs-on: ${{ matrix.runner }}
     steps:
       - name: Checkout repository

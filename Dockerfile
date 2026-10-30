@@ -61,4 +61,4 @@ RUN set -ex && \
     rm -f "$GEOIPUPDATE_CONF_FILE"
 
 COPY --chmod=755 geoip-update.sh /
-COPY --chmod=755 80-geoip-cron.sh 90-acme.sh /docker-entrypoint.d/
+COPY --chmod=755 80-geoip.sh 90-acme.sh 99-cron.sh /docker-entrypoint.d/

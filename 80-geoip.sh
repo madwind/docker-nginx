@@ -47,5 +47,3 @@ else
   rm -f /etc/cron.d/geoipupdate
   echo "GeoIP updates disabled: no runtime credentials or configuration file"
 fi
-
-cron

@@ -26,15 +26,21 @@ geoip_city /usr/share/GeoIP/GeoLite2-City.mmdb;
 现有 `GeoLite2-City.mmdb` 可继续使用。`geoip-update.sh` 会在数据库更新成功后执行
 `nginx -t && nginx -s reload`，让运行中的 NGINX 重新加载数据库。
 
-启动时，`80-geoip-cron.sh` 会将运行时的 GeoIP 凭据写入权限为 `600` 的配置文件，
-并安装每周三、周六更新的 cron 任务。任务直接读取配置文件，不依赖容器环境变量，
+启动时，`80-geoip.sh` 会将运行时的 GeoIP 凭据写入权限为 `600` 的配置文件，
+并安装每周三、周六 00:10 更新的 cron 任务。任务直接读取配置文件，不依赖容器环境变量，
 输出写入容器日志。也可以直接挂载配置文件，通过 `GEOIPUPDATE_CONF_FILE` 指定路径；
 如果没有运行时凭据或配置文件，则不启用 GeoIP 定时更新。
 
-`90-acme.sh` 会检查已有证书的有效期及私钥是否匹配，可用时直接跳过启动签发。
-缺失或不可用时才执行签发、安装，失败会终止启动；后续续期由 acme.sh 的 cron 任务处理。
+`90-acme.sh` 会先调用 acme.sh 的 `--install-cert` 安装本地证书，不访问 ACME API，
+也不自行判断 acme.sh 的证书目录结构。安装失败时才执行在线签发，再次安装失败会终止启动。
+`--install-cert` 不检查证书是否过期；续期由 acme.sh 的 cron 任务根据保存的续期时间处理。
+如果容器停机期间证书已过期，启动时仍可能安装该证书，直到后续定时续期成功。
 续期任务配置了包含 NGINX 的 `PATH`，输出也写入容器日志。
-请同时持久化 `/etc/acme` 和 `/etc/nginx/ssl`，保留续期所需的账号信息与证书。
+请持久化 `/etc/acme`，保留续期所需的账号信息与证书；`/etc/nginx/ssl` 可按需持久化。
+
+`99-cron.sh` 在 GeoIP 和证书初始化完成后单独启动 cron 服务，同时调度两者的定时任务。
+acme.sh 的续期计划在构建安装时自动生成，当前上游默认每 6 小时检查一次，
+实际计划可在容器内通过 `crontab -l` 查看；GeoIP 的计划位于 `/etc/cron.d/geoipupdate`。
 
 ```yaml
 version: '3.7'

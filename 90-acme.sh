@@ -30,23 +30,27 @@ for DOMAIN in $DOMAINS; do
 
   echo "Local certificate installation failed for $DOMAIN; attempting issuance"
 
-  if [ -z "${EAB_KID:-}" ] || [ -z "${EAB_HMAC_KEY:-}" ] || [ -z "${CF_Token:-}" ] || [ -z "${CF_Zone_ID:-}" ]; then
-    echo "Cannot obtain a certificate for $DOMAIN: EAB_KID, EAB_HMAC_KEY, CF_Token and CF_Zone_ID are required" >&2
+  if [ -z "${CF_Token:-}" ] || [ -z "${CF_Zone_ID:-}" ]; then
+    echo "Cannot obtain a certificate for $DOMAIN: CF_Token and CF_Zone_ID are required" >&2
     exit 1
   fi
 
   if [ "$account_registered" = false ]; then
-    /root/.acme.sh/acme.sh \
+    set -- \
       --config-home /etc/acme \
-      --register-account \
-      --eab-kid "$EAB_KID" \
-      --eab-hmac-key "$EAB_HMAC_KEY"
+      --server letsencrypt \
+      --register-account
+    if [ -n "${ACME_EMAIL:-}" ]; then
+      set -- "$@" --accountemail "$ACME_EMAIL"
+    fi
+    /root/.acme.sh/acme.sh "$@"
     account_registered=true
   fi
 
   issue_status=0
   /root/.acme.sh/acme.sh \
     --config-home /etc/acme \
+    --server letsencrypt \
     --issue -d "$DOMAIN" \
     --keylength ec-256 \
     --dns dns_cf || issue_status=$?

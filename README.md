@@ -31,6 +31,10 @@ geoip_city /usr/share/GeoIP/GeoLite2-City.mmdb;
 输出写入容器日志。也可以直接挂载配置文件，通过 `GEOIPUPDATE_CONF_FILE` 指定路径；
 如果没有运行时凭据或配置文件，则不启用 GeoIP 定时更新。
 
+默认使用 Let's Encrypt，通过 Cloudflare DNS 验证签发证书，无需 ZeroSSL 的 EAB 凭据。
+可通过 `ACME_EMAIL` 设置账号邮箱（可选）；首次签发需要 `CF_Token` 和 `CF_Zone_ID`。
+已有证书继续按保存的 CA 信息续期，不会因默认 CA 更换而自动重新签发。
+
 `90-acme.sh` 会先调用 acme.sh 的 `--install-cert` 安装本地证书，不访问 ACME API，
 也不自行判断 acme.sh 的证书目录结构。安装失败时才执行在线签发，再次安装失败会终止启动。
 `--install-cert` 不检查证书是否过期；续期由 acme.sh 的 cron 任务根据保存的续期时间处理。
@@ -62,9 +66,8 @@ services:
       # ACME
       ## 域名 空格分隔
       - DOMAINS=a.b.com c.d.com e.NODE_NAME.com
-      # Zero-ssl
-      - EAB_KID=
-      - EAB_HMAC_KEY=
+      # Let's Encrypt 账号邮箱（可选）
+      - ACME_EMAIL=admin@example.com
       # CF
       - CF_Token=
       - CF_Zone_ID=
